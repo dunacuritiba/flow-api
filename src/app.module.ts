@@ -8,7 +8,7 @@ import { ImoveisModule } from './resources/imoveis/imoveis.module';
     ConfigModule.forRoot({
       isGlobal: true,
     }),
-    MongooseModule.forRoot(process.env.MONGODB_URI as string),
+    MongooseModule.forRoot(process.env.MONGODB_URI_PROD as string),
     ImoveisModule,
   ],
   controllers: [],
