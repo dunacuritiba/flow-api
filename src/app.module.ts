@@ -8,7 +8,13 @@ import { ImoveisModule } from './resources/imoveis/imoveis.module';
     ConfigModule.forRoot({
       isGlobal: true,
     }),
-    MongooseModule.forRoot(process.env.MONGODB_URI_PROD as string),
+    MongooseModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => ({
+        uri: configService.get<string>('MONGODB_URI_PROD'),
+      }),
+    }),
     ImoveisModule,
   ],
   controllers: [],
