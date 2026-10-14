@@ -9,10 +9,9 @@ async function bootstrap() {
 
   // Configuração do Swagger
   const config = new DocumentBuilder()
-    .setTitle('API de Entidades')
+    .setTitle('Flow API')
     .setDescription('Documentação da API NestJS')
     .setVersion('1.0')
-    .addTag('entidade')
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
