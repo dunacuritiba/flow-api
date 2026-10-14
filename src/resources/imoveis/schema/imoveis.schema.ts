@@ -5,8 +5,8 @@ export type ImovelDocument = Imovel & Document;
 
 @Schema({ collection: 'imoveis', timestamps: true }) // Ajuste o nome da collection se necessário
 export class Imovel {
-  @Prop({ unique: true })
-  cpe?: string;
+  @Prop({ unique: true, type: Number })
+  CPE: number;
   @Prop() municipio?: string;
   @Prop() endereco?: string;
   @Prop() complemento?: string;

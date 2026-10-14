@@ -1,7 +1,9 @@
-import { IsString, IsOptional } from 'class-validator';
+import { IsString, IsOptional, IsInt } from 'class-validator';
 
 export class CreateImoveisDto {
-  @IsString() @IsOptional() CPE?: string;
+  @IsInt()
+  @IsOptional()
+  CPE?: number;
   @IsString() @IsOptional() municipio?: string;
   @IsString() @IsOptional() endereco?: string;
   @IsString() @IsOptional() complemento?: string;

@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   Query,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { ImoveisService } from './imoveis.service';
 import { CreateImoveisDto } from './dto/create-imovei.dto';
@@ -37,6 +38,11 @@ export class ImoveisController {
   @Get('busca/orgao')
   findByOrgao(@Query('sigla') sigla: string) {
     return this.imoveisService.findByOrgaoResponsavel(sigla);
+  }
+
+  @Get('cpe/:cpe')
+  findByCpe(@Param('cpe', ParseIntPipe) cpe: number) {
+    return this.imoveisService.findByCpe(cpe);
   }
 
   @Get(':id')

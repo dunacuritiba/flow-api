@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException, ConflictException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  ConflictException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Imovel, ImovelDocument } from './schema/imoveis.schema';
@@ -16,7 +20,9 @@ export class ImoveisService {
     if (CPE) {
       const imovelExistente = await this.imovelModel.findOne({ CPE }).exec();
       if (imovelExistente) {
-        throw new ConflictException(`Já existe um imóvel cadastrado com o CPE: ${CPE}`);
+        throw new ConflictException(
+          `Já existe um imóvel cadastrado com o CPE: ${CPE}`,
+        );
       }
     }
     const novoImovel = new this.imovelModel(createImovelDto);
@@ -35,9 +41,13 @@ export class ImoveisService {
 
   async update(id: string, updateImovelDto: UpdateImoveisDto): Promise<Imovel> {
     if (updateImovelDto.CPE) {
-      const imovelExistente = await this.imovelModel.findOne({ CPE: updateImovelDto.CPE }).exec();
+      const imovelExistente = await this.imovelModel
+        .findOne({ CPE: updateImovelDto.CPE })
+        .exec();
       if (imovelExistente && imovelExistente.id !== id) {
-        throw new ConflictException(`O CPE ${updateImovelDto.CPE} já está em uso por outro imóvel.`);
+        throw new ConflictException(
+          `O CPE ${updateImovelDto.CPE} já está em uso por outro imóvel.`,
+        );
       }
     }
 
@@ -48,11 +58,20 @@ export class ImoveisService {
     return imovelAtualizado;
   }
 
+  async findByCpe(cpe: number): Promise<Imovel> {
+    const imovel = await this.imovelModel.findOne({ CPE: cpe }).exec();
+
+    if (!imovel) {
+      throw new NotFoundException(`Nenhum imóvel encontrado com o CPE: ${cpe}`);
+    }
+
+    return imovel;
+  }
+
   async remove(id: string): Promise<void> {
     const resultado = await this.imovelModel.findByIdAndDelete(id).exec();
     if (!resultado) throw new NotFoundException('Imóvel não encontrado');
   }
-
 
   async findByMunicipio(municipio: string): Promise<Imovel[]> {
     return this.imovelModel
