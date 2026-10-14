@@ -12,7 +12,7 @@ import { ImoveisModule } from './resources/imoveis/imoveis.module';
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
-        uri: configService.get<string>('MONGODB_URI_PROD'),
+        uri: configService.get<string>('MONGODB_URI'),
       }),
     }),
     ImoveisModule,

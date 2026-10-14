@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, ConflictException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Imovel, ImovelDocument } from './schema/imoveis.schema';
@@ -12,6 +12,13 @@ export class ImoveisService {
   ) {}
 
   async create(createImovelDto: CreateImoveisDto): Promise<Imovel> {
+    const { CPE } = createImovelDto;
+    if (CPE) {
+      const imovelExistente = await this.imovelModel.findOne({ CPE }).exec();
+      if (imovelExistente) {
+        throw new ConflictException(`Já existe um imóvel cadastrado com o CPE: ${CPE}`);
+      }
+    }
     const novoImovel = new this.imovelModel(createImovelDto);
     return novoImovel.save();
   }
@@ -27,6 +34,13 @@ export class ImoveisService {
   }
 
   async update(id: string, updateImovelDto: UpdateImoveisDto): Promise<Imovel> {
+    if (updateImovelDto.CPE) {
+      const imovelExistente = await this.imovelModel.findOne({ CPE: updateImovelDto.CPE }).exec();
+      if (imovelExistente && imovelExistente.id !== id) {
+        throw new ConflictException(`O CPE ${updateImovelDto.CPE} já está em uso por outro imóvel.`);
+      }
+    }
+
     const imovelAtualizado = await this.imovelModel
       .findByIdAndUpdate(id, updateImovelDto, { new: true })
       .exec();
@@ -39,17 +53,14 @@ export class ImoveisService {
     if (!resultado) throw new NotFoundException('Imóvel não encontrado');
   }
 
-  // --- QUERIES CUSTOMIZADAS ---
 
   async findByMunicipio(municipio: string): Promise<Imovel[]> {
-    // Busca "case-insensitive" pelo nome do município
     return this.imovelModel
       .find({ municipio: new RegExp(`^${municipio}$`, 'i') })
       .exec();
   }
 
   async findByOrgaoResponsavel(orgao: string): Promise<Imovel[]> {
-    // Busca propriedades que contenham a sigla/nome do órgão (ex: "SEEC")
     return this.imovelModel
       .find({ orgaoResponsavel: new RegExp(orgao, 'i') })
       .exec();
