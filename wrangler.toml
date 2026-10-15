@@ -14,6 +14,6 @@ command = "npm run build"
 [vars]
 
 [alias]
-"@nestjs/microservices" = "./node_modules/@nestjs/core/helpers/noop.js"
-"@nestjs/microservices/microservices-module.js" = "./node_modules/@nestjs/core/helpers/noop.js"
-"@fastify/static" = "./node_modules/@nestjs/core/helpers/noop.js"
+"@nestjs/microservices" = "./empty.js"
+"@nestjs/microservices/microservices-module.js" = "./empty.js"
+"@fastify/static" = "./empty.js"
