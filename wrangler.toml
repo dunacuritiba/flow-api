@@ -12,7 +12,6 @@ mode = "smart"
 command = "npm run build"
 
 [vars]
-# Variáveis globais se precisar
 
 [alias]
 "@nestjs/microservices" = "./node_modules/@nestjs/core/helpers/noop.js"
