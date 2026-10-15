@@ -58,7 +58,7 @@ export class ImoveisService {
     return imovelAtualizado;
   }
 
-  async findByCpe(cpe: number): Promise<Imovel> {
+  async findByCpe(cpe: string): Promise<Imovel> {
     const imovel = await this.imovelModel.findOne({ CPE: cpe }).exec();
 
     if (!imovel) {
