@@ -1,0 +1,4 @@
+name = "flow-api"
+main = "dist/main.js"
+compatibility_date = "2026-10-15"
+compatibility_flags = [ "nodejs_compat" ]
