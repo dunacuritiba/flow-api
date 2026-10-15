@@ -2,3 +2,19 @@ name = "flow-api"
 main = "dist/main.js"
 compatibility_date = "2026-10-15"
 compatibility_flags = [ "nodejs_compat" ]
+
+[placement]
+mode = "smart"
+
+# Esta regra força o esbuild do Wrangler a ignorar/externalizar os pacotes nativos do Node
+# que o nodejs_compat vai injetar em tempo de execução no Cloudflare.
+[build]
+command = "npm run build"
+
+[vars]
+# Variáveis globais se precisar
+
+[alias]
+"@nestjs/microservices" = "./node_modules/@nestjs/core/helpers/noop.js"
+"@nestjs/microservices/microservices-module.js" = "./node_modules/@nestjs/core/helpers/noop.js"
+"@fastify/static" = "./node_modules/@nestjs/core/helpers/noop.js"
